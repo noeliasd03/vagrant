@@ -8,6 +8,8 @@ Vagrant.configure("2") do |config|
     vb.cpus="2"
     vb.customize ["modifyvm", :id, "--groups", "/Proyecto Vagrant"]
   end
+  config.vm.synced_folder "./scripts", "/vagrant/scripts"
+  
 
   # LOAD BALANCER
   
@@ -17,8 +19,7 @@ Vagrant.configure("2") do |config|
     balancer.vm.provider "virtualbox" do |vb|
       vb.name="LOAD BALANCER"
     end
-    balancer.vm.provision "shell", inline: "bash /vagrant/haproxy.sh > /dev/null 2>&1 && echo 'INSTALLING AND CONFIGURING HAPROXY'", privileged: true
-  
+    balancer.vm.provision "shell", inline: "echo 'INSTALLING AND CONFIGURING HAPROXY' && bash /vagrant/scripts/haproxy.sh > /dev/null 2>&1", privileged: true
   end
 
   # WEB SERVER 1
@@ -29,7 +30,7 @@ Vagrant.configure("2") do |config|
     web1.vm.provider "virtualbox" do |vb|
       vb.name="WEB SERVER 1"
     end
-    web1.vm.provision "INSTALLING AND CONFIGURING NGINX", type: "shell", path: "nginx.sh"
+    web1.vm.provision "shell", inline: "echo 'INSTALLING AND CONFIGURING NGINX' && bash /vagrant/scripts/nginx.sh > /dev/null 2>&1", privileged: true
 
   end
 
@@ -41,7 +42,7 @@ Vagrant.configure("2") do |config|
     web2.vm.provider "virtualbox" do |vb|
       vb.name="WEB SERVER 2"
     end
-    web2.vm.provision "INSTALLING AND CONFIGURING NGINX", type: "shell", path: "nginx.sh"
+    web2.vm.provision "shell", inline: "echo 'INSTALLING AND CONFIGURING NGINX' && bash /vagrant/scripts/nginx.sh > /dev/null 2>&1", privileged: true
 
   end
 
@@ -53,7 +54,7 @@ Vagrant.configure("2") do |config|
     db.vm.provider "virtualbox" do |vb|
       vb.name="DATABASE SERVER"
     end
-    db.vm.provision "INSTALLING AND CONFIGURING MYSQL", type: "shell", path: "mysql.sh"
+    db.vm.provision "shell", inline: "echo 'INSTALLING AND CONFIGURING MYSQL' && bash /vagrant/scripts/mysql.sh > /dev/null 2>&1", privileged: true
 
   end
 
@@ -65,7 +66,7 @@ Vagrant.configure("2") do |config|
     log.vm.provider "virtualbox" do |vb|
       vb.name="LOGGING SERVER"
     end
-    log.vm.provision "INSTALLING AND CONFIGURING LOGSTASH", type: "shell", path: "logstash.sh"
+    log.vm.provision "shell", inline: "echo 'INSTALLING AND CONFIGURING LOGSTASH' && bash /vagrant/scripts/logstash.sh > /dev/null 2>&1", privileged: true
 
   end
 
@@ -77,7 +78,7 @@ Vagrant.configure("2") do |config|
     mon.vm.provider "virtualbox" do |vb|
       vb.name="MONITORING"
     end
-    mon.vm.provision "INSTALLING AND CONFIGURING PROMETHEUS", type: "shell", path: "prometheus.sh"
+    mon.vm.provision "shell", inline: "echo 'INSTALLING AND CONFIGURING PROMETHEUS' && bash /vagrant/scripts/prometheus.sh > /dev/null 2>&1", privileged: true
 
   end
 
